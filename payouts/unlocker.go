@@ -4,10 +4,10 @@ import (
 	"fmt"
 	"log"
 	"math/big"
+	"os"
 	"strconv"
 	"strings"
 	"time"
-	"os"
 
 	"github.com/ethereum/go-ethereum/common/math"
 
@@ -30,10 +30,10 @@ type UnlockerConfig struct {
 }
 
 const minDepth = 16
-const byzantiumHardForkHeight = 10000000
+const byzantiumHardForkHeight = 4370000
 
 var homesteadReward = math.MustParseBig256("5000000000000000000")
-var byzantiumReward = math.MustParseBig256("4000000000000000000")
+var byzantiumReward = math.MustParseBig256("3000000000000000000")
 
 // Donate 10% from pool fees to developers
 const donationFee = 10.0
