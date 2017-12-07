@@ -27,10 +27,10 @@ module.exports = function(environment) {
 
       // Fee and payout details
       PoolFee: '1%',
-      PayoutThreshold: '0.5 Ether',
+      PayoutThreshold: '0.5 Ella',
 
       // For network hashrate (change for your favourite fork)
-      BlockTime: 14.4
+      BlockTime: 10.0
     }
   };
 
