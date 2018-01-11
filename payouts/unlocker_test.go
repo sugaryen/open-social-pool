@@ -90,13 +90,13 @@ func TestGetUncleReward(t *testing.T) {
 func TestGetByzantiumUncleReward(t *testing.T) {
 	rewards := make(map[int64]string)
 	expectedRewards := map[int64]string{
-		1: "2625000000000000000",
-		2: "2250000000000000000",
-		3: "1875000000000000000",
-		4: "1500000000000000000",
-		5: "1125000000000000000",
-		6: "750000000000000000",
-		7: "375000000000000000",
+		1: "125000000000000000",
+		2: "125000000000000000",
+		3: "125000000000000000",
+		4: "125000000000000000",
+		5: "125000000000000000",
+		6: "125000000000000000",
+		7: "125000000000000000",
 	}
 	for i := int64(1); i < 8; i++ {
 		rewards[i] = getUncleReward(byzantiumHardForkHeight, byzantiumHardForkHeight+i).String()
@@ -118,7 +118,7 @@ func TestGetRewardForUngle(t *testing.T) {
 
 func TestGetByzantiumRewardForUngle(t *testing.T) {
 	reward := getRewardForUncle(byzantiumHardForkHeight).String()
-	expectedReward := "93750000000000000"
+	expectedReward := "125000000000000000"
 	if expectedReward != reward {
 		t.Errorf("Incorrect uncle bonus for height %v, expected %v vs %v", byzantiumHardForkHeight, expectedReward, reward)
 	}
