@@ -224,7 +224,7 @@ func (u *PayoutsProcessor) process() {
 			wg.Done()
 		}(txHash, login, &wg)
 
-		if waitingCount > 5 {
+		if waitingCount > 10 {
 			wg.Wait()
 			waitingCount = 0
 		}
