@@ -7,6 +7,7 @@ import (
 	"os"
 	"strconv"
 	"time"
+	"sync"
 
 	"github.com/ethereum/go-ethereum/common/hexutil"
 
@@ -117,6 +118,9 @@ func (u *PayoutsProcessor) process() {
 		return
 	}
 
+	waitingCount := 0
+	var wg sync.WaitGroup
+
 	for _, login := range payees {
 		amount, _ := u.backend.GetBalance(login)
 		amountInShannon := big.NewInt(amount)
@@ -195,24 +199,33 @@ func (u *PayoutsProcessor) process() {
 		totalAmount.Add(totalAmount, big.NewInt(amount))
 		log.Printf("Paid %v Shannon to %v, TxHash: %v", amount, login, txHash)
 
-		// Wait for TX confirmation before further payouts
-		for {
-			log.Printf("Waiting for tx confirmation: %v", txHash)
-			time.Sleep(txCheckInterval)
-			receipt, err := u.rpc.GetTxReceipt(txHash)
-			if err != nil {
-				log.Printf("Failed to get tx receipt for %v: %v", txHash, err)
-				continue
-			}
-			// Tx has been mined
-			if receipt != nil && receipt.Confirmed() {
-				if receipt.Successful() {
-					log.Printf("Payout tx successful for %s: %s", login, txHash)
-				} else {
-					log.Printf("Payout tx failed for %s: %s. Address contract throws on incoming tx.", login, txHash)
+		wg.Add(1)
+		waitingCount++
+		go func(txHash string, login string, wg *sync.WaitGroup) {
+			// Wait for TX confirmation before further payouts
+			for {
+				log.Printf("Waiting for tx confirmation: %v", txHash)
+				time.Sleep(txCheckInterval)
+				receipt, err := u.rpc.GetTxReceipt(txHash)
+				if err != nil {
+					log.Printf("Failed to get tx receipt for %v: %v", txHash, err)
+					continue
 				}
-				break
+				// Tx has been mined
+				if receipt != nil && receipt.Confirmed() {
+					if receipt.Successful() {
+						log.Printf("Payout tx successful for %s: %s", login, txHash)
+					} else {
+						log.Printf("Payout tx failed for %s: %s. Address contract throws on incoming tx.", login, txHash)
+					}
+					break
+				}
 			}
+			wg.Done()
+		}(txHash, login, &wg)
+
+		if waitingCount > 5 {
+			wg.Wait()
 		}
 	}
 
