@@ -29,8 +29,9 @@ type PayoutsConfig struct {
 	GasPrice     string `json:"gasPrice"`
 	AutoGas      bool   `json:"autoGas"`
 	// In Shannon
-	Threshold int64 `json:"threshold"`
-	BgSave    bool  `json:"bgsave"`
+	Threshold    int64  `json:"threshold"`
+	BgSave       bool   `json:"bgsave"`
+	ConcurrentTx int    `json:"concurrentTx"`
 }
 
 func (self PayoutsConfig) GasHex() string {
@@ -224,7 +225,7 @@ func (u *PayoutsProcessor) process() {
 			wg.Done()
 		}(txHash, login, &wg)
 
-		if waitingCount > 10 {
+		if waitingCount > u.config.ConcurrentTx {
 			wg.Wait()
 			waitingCount = 0
 		}
