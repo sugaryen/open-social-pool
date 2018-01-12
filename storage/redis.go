@@ -590,7 +590,7 @@ func (r *RedisClient) GetMinerStats(login string, maxPayments int64) (map[string
 		stats["stats"] = convertStringMap(result)
 		payments := convertPaymentsResults(cmds[1].(*redis.ZSliceCmd))
 		stats["payments"] = payments
-		stats["paymentsTotal"] = cmds[2].Int64()
+		stats["paymentsTotal"] = cmds[2].(*redis.StringCmd).Int64()
 		roundShares, _ := cmds[3].(*redis.StringCmd).Int64()
 		stats["roundShares"] = roundShares
 	}
@@ -693,7 +693,7 @@ func (r *RedisClient) CollectStats(smallWindow time.Duration, maxBlocks, maxPaym
 
 	payments := convertPaymentsResults(cmds[10].(*redis.ZSliceCmd))
 	stats["payments"] = payments
-	stats["paymentsTotal"] = cmds[9].Int64()
+	stats["paymentsTotal"] = cmds[9].(*redis.StringCmd).Int64()
 
 	totalHashrate, miners := convertMinersStats(window, cmds[1].(*redis.ZSliceCmd))
 	stats["miners"] = miners
