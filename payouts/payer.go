@@ -232,6 +232,7 @@ func (u *PayoutsProcessor) process() {
 	}
 
 	wg.Wait()
+	waitingCount = 0
 
 	if mustPay > 0 {
 		log.Printf("Paid total %v Shannon to %v of %v payees", totalAmount, minersPaid, mustPay)
