@@ -441,6 +441,8 @@ func (r *RedisClient) WritePayment(login, txHash string, amount int64) error {
 		tx.ZAdd(r.formatKey("payments", login), redis.Z{Score: float64(ts), Member: join(txHash, amount)})
 		tx.ZRem(r.formatKey("payments", "pending"), join(login, amount))
 		tx.Del(r.formatKey("payments", "lock"))
+		tx.HIncrBy(r.formatKey("paymentsTotal"), "all", 1)
+		tx.HIncrBy(r.formatKey("paymentsTotal"), login, 1)
 		return nil
 	})
 	return err
@@ -576,7 +578,7 @@ func (r *RedisClient) GetMinerStats(login string, maxPayments int64) (map[string
 	cmds, err := tx.Exec(func() error {
 		tx.HGetAllMap(r.formatKey("miners", login))
 		tx.ZRevRangeWithScores(r.formatKey("payments", login), 0, maxPayments-1)
-		tx.ZCard(r.formatKey("payments", login))
+		tx.HGet(r.formatKey("paymentsTotal"), login)
 		tx.HGet(r.formatKey("shares", "roundCurrent"), login)
 		return nil
 	})
@@ -666,7 +668,7 @@ func (r *RedisClient) CollectStats(smallWindow time.Duration, maxBlocks, maxPaym
 		tx.ZCard(r.formatKey("blocks", "candidates"))
 		tx.ZCard(r.formatKey("blocks", "immature"))
 		tx.ZCard(r.formatKey("blocks", "matured"))
-		tx.ZCard(r.formatKey("payments", "all"))
+		tx.HGet(r.formatKey("paymentsTotal"), "all")
 		tx.ZRevRangeWithScores(r.formatKey("payments", "all"), 0, maxPayments-1)
 		return nil
 	})
