@@ -254,7 +254,10 @@ func (r *RedisClient) WriteBlock(login, id string, params []string, diff, roundD
 }
 
 func (r *RedisClient) writeShare(tx *redis.Multi, ms, ts int64, login, id string, diff int64, expire time.Duration) {
-	tx.LPush(r.formatKey("lastshares"), login)
+	times := int(diff / 1000000000)
+	for i := 0; i < times; i++ {
+		tx.LPush(r.formatKey("lastshares"), login)
+	}
 	tx.LTrim(r.formatKey("lastshares"), 0, r.pplns)
 
 	tx.HIncrBy(r.formatKey("shares", "roundCurrent"), login, diff)
