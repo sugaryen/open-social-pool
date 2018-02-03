@@ -647,6 +647,7 @@ func (r *RedisClient) GetMinerStats(login string, maxPayments int64) (map[string
 		tx.ZRevRangeWithScores(r.formatKey("payments", login), 0, maxPayments-1)
 		tx.HGet(r.formatKey("paymentsTotal"), login)
 		tx.HGet(r.formatKey("shares", "currentShares"), login)
+		tx.LRange(r.formatKey("lastshares"), 0, r.pplns)
 		return nil
 	})
 
@@ -658,8 +659,14 @@ func (r *RedisClient) GetMinerStats(login string, maxPayments int64) (map[string
 		payments := convertPaymentsResults(cmds[1].(*redis.ZSliceCmd))
 		stats["payments"] = payments
 		stats["paymentsTotal"], _ = cmds[2].(*redis.StringCmd).Int64()
-		roundShares, _ := cmds[3].(*redis.StringCmd).Int64()
-		stats["roundShares"] = roundShares
+		shares := cmds[4].(*redis.StringSliceCmd).Val()
+		csh := 0
+		for _, val := range shares {
+			if val == login {
+				csh++
+			}
+		}
+		stats["roundShares"] = csh
 	}
 
 	return stats, nil
@@ -784,7 +791,6 @@ func (r *RedisClient) CollectWorkersStats(sWindow, lWindow time.Duration, login 
 	cmds, err := tx.Exec(func() error {
 		tx.ZRemRangeByScore(r.formatKey("hashrate", login), "-inf", fmt.Sprint("(", now-largeWindow))
 		tx.ZRangeWithScores(r.formatKey("hashrate", login), 0, -1)
-		tx.LRange(r.formatKey("lastshares"), 0, r.pplns)
 		return nil
 	})
 
@@ -828,15 +834,6 @@ func (r *RedisClient) CollectWorkersStats(sWindow, lWindow time.Duration, login 
 		workers[id] = worker
 	}
 
-	shares := cmds[2].(*redis.StringSliceCmd).Val()
-	csh := 0
-	for _, val := range shares {
-		if val == login {
-			csh++
-		}
-	}
-
-	stats["roundShares"] = csh
 	stats["workers"] = workers
 	stats["workersTotal"] = len(workers)
 	stats["workersOnline"] = online
