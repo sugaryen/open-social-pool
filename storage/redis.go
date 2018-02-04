@@ -496,25 +496,6 @@ func (r *RedisClient) WritePayment(login, txHash string, amount int64) error {
 	return err
 }
 
-func (r *RedisClient) WriteReward(login string, amount int64, percent *big.Rat, immature bool, block *BlockData) error {
-	if (amount <= 0) {
-		return nil
-	}
-	tx := r.client.Multi()
-	defer tx.Close()
-
-	addStr := join(amount, percent, immature, block.Hash, block.Height, block.Timestamp)
-	remStr := join(amount, percent, !immature, block.Hash, block.Height, block.Timestamp)
-
-	_, err := tx.Exec(func() error {
-		tx.ZAdd(r.formatKey("rewards", login), redis.Z{Score: float64(block.Timestamp), Member: addStr})
-		tx.ZRem(r.formatKey("rewards", login), remStr)
-		tx.ZRemRangeByRank(r.formatKey("rewards", login), 0, -100)
-		return nil
-	})
-	return err
-}
-
 func (r *RedisClient) WriteImmatureBlock(block *BlockData, roundRewards map[string]int64) error {
 	tx := r.client.Multi()
 	defer tx.Close()
