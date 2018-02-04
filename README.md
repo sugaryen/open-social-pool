@@ -107,6 +107,8 @@ otherwise you will get errors on start because of JSON comments.**
   "coin": "eth",
   // Give unique name to each instance
   "name": "main",
+  // PPLNS rounds
+  "pplns": 9000,
 
   "proxy": {
     "enabled": true,
