@@ -506,7 +506,7 @@ func (r *RedisClient) WriteReward(login string, amount int64, percent *big.Rat, 
 	addStr := join(amount, percent, immature, block.Hash, block.Height, block.Timestamp)
 	remStr := join(amount, percent, !immature, block.Hash, block.Height, block.Timestamp)
 
-	remscore := block.Timestamp - 3600 * 24 * 40	// Store the last 40 Days
+	remscore := block.Timestamp - 3600 * 24 * 7	// Store the last 7 Days
 
 	_, err := tx.Exec(func() error {
 		tx.ZAdd(r.formatKey("rewards", login), redis.Z{Score: float64(block.Timestamp), Member: addStr})
