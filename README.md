@@ -46,7 +46,7 @@ Install redis-server.
 
     ./build/bin/open-ethereum-pool config.json
 
-You can use Ubuntu upstart - check for sample config in <code>upstart.conf</code>.
+You can use Ubuntu upstart - check for sample config in <code>upstart.conf</code>. See [wiki](https://github.com/ellaism/open-ethereum-pool/wiki/Running-Pool) for more ways to run the pool.
 
 ### Building Frontend
 
