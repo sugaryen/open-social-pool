@@ -2,7 +2,7 @@
 	"threads": 4,
 	"coin": "ella",
 	"name": "main",
-	"pplns": 4000,
+	"pplns": 9000,
 	"proxy": {
 		"enabled": true,
 		"listen": "0.0.0.0:8899",
@@ -71,7 +71,7 @@
 		"enabled": false,
 		"poolFee": 1.0,
 		"poolFeeAddress": "",
-		"donate": false,
+		"donate": true,
 		"depth": 32,
 		"immatureDepth": 20,
 		"keepTxFees": true,
@@ -85,12 +85,13 @@
 		"interval": "15m",
 		"daemon": "http://127.0.0.1:8545",
 		"timeout": "10s",
-                "address": "",
+		"address": "0x0000000000000000000000000000000000000000",
 		"gas": "21000",
 		"gasPrice": "50000000000",
 		"autoGas": true,
 		"threshold": 500000000,
-		"bgsave": true
+		"bgsave": true,
+		"concurrentTx": 10
 	},
 	"newrelicEnabled": false,
 	"newrelicName": "MyEtherProxy",
