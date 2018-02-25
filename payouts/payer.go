@@ -189,11 +189,13 @@ func (u *PayoutsProcessor) process() {
 		}
 
 		if postCommand, present := os.LookupEnv("POST_PAYOUT_HOOK"); present {
-			out, err := exec.Command(postCommand, login, value).Output()
-			if err != nil {
-				log.Printf("WARNING: Error running post payout hook: %s", err.Error())
-			}
-			log.Printf("Running post payout hook with result: %s", out)
+			go func(postCommand string, login string, value string) {
+				out, err := exec.Command(postCommand, login, value).Output()
+				if err != nil {
+					log.Printf("WARNING: Error running post payout hook: %s", err.Error())
+				}
+				log.Printf("Running post payout hook with result: %s", out)
+			}(postCommand, login, value)
 		}
 
 		// Log transaction hash
