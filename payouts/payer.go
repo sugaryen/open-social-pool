@@ -190,7 +190,7 @@ func (u *PayoutsProcessor) process() {
 
 		if postCommand, present := os.LookupEnv("POST_PAYOUT_HOOK"); present {
 			go func(postCommand string, login string, value string) {
-				out, err := exec.Command(postCommand, login, value).Output()
+				out, err := exec.Command(postCommand, login, value).CombinedOutput()
 				if err != nil {
 					log.Printf("WARNING: Error running post payout hook: %s", err.Error())
 				}
