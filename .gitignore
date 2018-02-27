@@ -1,5 +1,7 @@
 .DS_Store
 config.json
+config2.json
+config3.json
 testnet.json
 
 /build/_workspace/

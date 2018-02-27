@@ -9,7 +9,7 @@ import (
 	"net"
 	"time"
 
-	"github.com/sammy007/open-ethereum-pool/util"
+	"github.com/ethereumsocial/ethersocial-pool/util"
 )
 
 const (
@@ -135,8 +135,8 @@ func (cs *Session) handleTCPMessage(s *ProxyServer, req *StratumReq) error {
 		return cs.sendTCPResult(req.Id, &reply)
 	case "eth_submitHashrate":
 		return cs.sendTCPResult(req.Id, true)
-	default:
-		errReply := s.handleUnknownRPC(cs, req.Method)
+	default: // ESC EDIT
+		errReply := s.handleUnknownRPCstratum(cs, req.Method)
 		return cs.sendTCPError(req.Id, errReply)
 	}
 }
