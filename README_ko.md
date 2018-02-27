@@ -20,6 +20,10 @@
 * [Ether-Proxy](https://github.com/sammy007/ether-proxy) HTTP proxy with web interface
 * [Stratum Proxy](https://github.com/Atrides/eth-proxy) for Ethereum Social
 
+## Ethereum Social (ETSC)
+
+### Ethereum Social Pool 운영자 분들께서는 discord 채널에 참가해 주시기 바랍니다.
+
 ### Ethereum Social (ETSC) Pool list
 
 * [pool.ethereumsocial.kr](https://pool.ethereumsocial.kr)
