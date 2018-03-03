@@ -11,11 +11,11 @@
                 "behindReverseProxy": false,
                 "blockRefreshInterval": "120ms",
                 "stateUpdateInterval": "3s",
-                "difficulty": 100000000,
+                "difficulty": 2000000000,
                 "hashrateExpiration": "3h",
 
                 "healthCheck": true,
-                "maxFails": 100,
+                "maxFails": 100000,
 
                 "stratum": {
                         "enabled": true,
@@ -25,7 +25,7 @@
                 },
 
                 "policy": {
-                        "workers": 8,
+                        "workers": 300,
                         "resetInterval": "60m",
                         "refreshInterval": "1m",
 
