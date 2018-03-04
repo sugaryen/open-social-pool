@@ -298,8 +298,8 @@ Set up based on commands below.
     // Gas amount and price for payout tx (advanced users only)
     "gas": "21000",
     "gasPrice": "50000000000",
-    // The minimum distribution of mining reward. It is 1 ESC now.
-    "threshold": 100000000,
+    // The minimum distribution of mining reward. It is 1 ETSC now.
+    "threshold": 1000000000,
     // Perform BGSAVE on Redis after successful payouts session
     "bgsave": false
   }

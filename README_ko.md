@@ -295,8 +295,8 @@ Dependencies:
     // Gas amount and price for payout tx (advanced users only)
     "gas": "21000",
     "gasPrice": "50000000000",
-    // 채굴보상 분배 최소량입니다. 현재 100 ESC로 설정되어 있습니다.
-    "threshold": 10000000000,
+    // 채굴보상 분배 최소량입니다. 현재 1 ETSC로 설정되어 있습니다.
+    "threshold": 1000000000,
     // Perform BGSAVE on Redis after successful payouts session
     "bgsave": false
   }
