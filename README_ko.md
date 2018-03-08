@@ -33,9 +33,11 @@
 * [esc.cminer.co](http://esc.cminer.co)
 * [leafpool.com](http://www.leafpool.com/ethereumsocial)
 
-### Building on Linux
+## 간단한 ETSC 풀 구축 방법
 
-Dependencies:
+### 리눅스에 구축하는 법
+
+준비물:
 
   * go >= 1.9
   * redis-server >= 2.8.0
@@ -43,7 +45,7 @@ Dependencies:
   * nginx
   * gesc
 
-**I highly recommend to use Ubuntu 16.04 LTS.**
+**Ubuntu 16.04 LTS 버전 이용을 추천드립니다.**
 
 ### go lang 설치
 
@@ -55,12 +57,7 @@ Dependencies:
 
     $ sudo apt-get install redis-server
 
-### redis-server 테스트
-
-    $ redis-cli
-    127.0.0.1:6379> ping
-    PONG
-    127.0.0.1:6379> exit
+레디스는 127.0.0.1 포트에만 개방하시기 바랍니다. 또한 추가 보안을 위해서 [비밀번호](http://geekcoders.tistory.com/entry/Redis-Password-%EC%84%A4%EC%A0%95) 설정을 추천드립니다.
 
 ### nginx 설치
 
@@ -73,47 +70,66 @@ Dependencies:
 
 ### go-esc 설치
 
-    $ wget https://github.com/ethereumsocial/go-esc/releases/download/v0.2.2/ gesc-v0.2.2-linux-amd64.tar.gz
-    $ tar -xvzf gesc-v0.2.2-linux-amd64.tar.gz
-    $ cd gesc-v0.2.2-linux-amd64
-    $ cp gesc /usr/local/bin/gesc
+    $ wget https://github.com/ethereumsocial/go-esc/releases/download/v0.2.3/gesc-v0.2.3-linux-amd64.tar.gz
+    $ tar -xvzf gesc-v0.2.3-linux-amd64.tar.gz
+    $ sudo cp gesc-v0.2.3-linux-amd64/gesc /usr/local/bin/gesc
 
 ### go-esc 실행
-우분투에서는 screen 명령어를 이용해서 활용을 하는 것이 터미널을 관리할 때 편리합니다. 구글에서 ubuntu screen 을 검색해서 사용법을 익혀주세요.
 
-    $ screen -S esc1
-    $ gesc --cache=1024 --rpc --rpcaddr 127.0.0.1 --rpcport 8545 --rpcapi "eth,net,web3" console
-    Crtl + a, d
+우분투에서는 screen 명령어를 사용하는 방법이 있지만 서버 관리에는 service 데몬이 편하므로 여기서는 serviced 를 사용하겠습니다.
 
-원래 터미널로 다시 돌아가고 싶을때는
+먼저, 서비스를 등록합니다.
 
-    $ screen -r esc1
+    $ sudo nano /etc/systemd/system/ethersocial.service
 
-원래 터미널로 돌아온 상태에서 go-esc를 한 번 더 실행합니다.
+다음 예시를 참고하여 서비스 설정을 합니다.
+
+```
+[Unit]
+Description=Ethersocial for Pool
+After=network-online.target
+
+[Service]
+ExecStart=/usr/local/bin/gesc --cache=1024 --rpc --rpcaddr 127.0.0.1 --rpcapi "eth,net,web3" --extradata "Mined by <your-pool-domain>" --ethstats "<your-pool-domain>:EthereumSocial@stats.ethereumsocial.kr"
+User=ubuntu
+
+[Install]
+WantedBy=multi-user.target
+```
+
+다음 명령어로 서비스를 실행할 수 있습니다.
+
+    $ sudo systemctl enable ethersocial
+    $ sudo systemctl start ethersocial
+
+노드의 로그를 볼 경우 다음 명령어를 칩니다.
+
+    $ sudo systemctl status ethersocial
+
+Gesc 콘솔에 접근하고자 하는 경우 아래 명령어를 칩니다.
 
     $ gesc attach
 
 풀에서 사용할 계정을 새로 생성하고 지갑을 열어줍니다. 그래야 출금이 됩니다. 이 과정은 지갑을 재구동할 때마다 빠뜨리지 말고 실행해야합니다.
 
-    > personal.unlockAccount("비밀번호")
+    > personal.newAccount()
     > personal.unlockAccount(eth.accounts[0],"비밀번호",40000000)
-
-
 
 ### ethersocial pool 설치
 
     $ git config --global http.https://gopkg.in.followRedirects true
     $ git clone https://github.com/ethereumsocial/ethersocial-pool
     $ cd ethersocial-pool
-    $ chmod 755 build/*
     $ make all
 
-다음을 했을 때 ethersocial-pool 이 나오면 설치 성공입니다.
+다음을 했을 때 ethersocial-pool 이 나오면 빌드 성공입니다.
+
     $ ls ~/ethersocial-pool/build/bin/
 
 ### ethersocial pool 설정
+
     $ mv config.example.json config.json
-    $ vi config.json
+    $ nano config.json
 
 아래 부분을 보고 설정을 합니다.
 
@@ -122,7 +138,7 @@ Dependencies:
   // CPU 코어수입니다.
   "threads": 2,
   // Prefix for keys in redis store
-  "coin": "esc",
+  "coin": "etsc",
   // Give unique name to each instance
   "name": "main",
 
@@ -314,32 +330,46 @@ I recommend this deployment strategy:
 
 
 ### Pool 실행
-마찬가지로 screen을 실행한 후 풀을 실행해야 합니다. 그렇지 않으면 터미널이 닫히면서 풀 동작이 멈춥니다.
+마찬가지로 service를 생성하고 풀 서비스를 시작합니다.
 
-    $ screen -S pool1
-    $ cd ~/ethersocial-pool
-    $ ./build/bin/ethersocial-pool config.json
-    Crtl + a, d
+    $ sudo nano /etc/systemd/system/ethersocial.service
 
-해당 스크린으로 돌아가려면 다음과 같이 입력합니다.
+다음 예시를 참고하여 서비스 설정을 합니다.
 
-    $ screen -r pool1
+```
+[Unit]
+Description=Etherpool
+After=ethersocial.target
 
+[Service]
+Type=simple
+ExecStart=/home/<사용자명>/ethersocial-pool/build/bin/ethersocial-pool /home/<사용자명>/ethersocial-pool/config.json
+
+[Install]
+WantedBy=multi-user.target
+```
+
+아래 명령어로 풀을 실행합니다.
+
+    $ sudo systemctl enable etherpool
+    $ sudo systemctl start etherpool
+
+풀 서비스 디버깅을 할 경우 아래 명령어를 칩니다.
+
+    $ sudo systemctl status etherpool
 
 여기까지해서 백엔드 작동을 완료했습니다.
 
-
 ### 방화벽 오픈
+
 이 서비스들을 작동시키리면 방화벽을 오픈해야합니다. 기본적으로 우분투 방화벽 설정을 한 곳도 있고 안한 곳도 있는데 각자의 환경에 맞추어 방화벽을 오픈합니다.
 80,443,8080,8888,8008 을 열어주면 됩니다.
-
-
 
 ## Frontend 설치
 
 ### 설정파일 수정
 
-    $ vi ~/ethersocial-pool/www/config/environment.js
+    $ nano ~/ethersocial-pool/www/config/environment.js
 
 다음 부분을 적절히 변경합니다.
 
@@ -349,10 +379,6 @@ I recommend this deployment strategy:
     StratumHost: 'your-pool-domain',
     PoolFee: '1%',
 
-
-Install nodejs. I suggest using LTS version >= 4.x from https://github.com/nodesource/distributions or from your Linux distribution or simply install nodejs on Ubuntu Xenial 16.04.
-
-
 The frontend is a single-page Ember.js application that polls the pool API to render miner stats.
 
     $ cd ~/ethersocial-pool/www
@@ -360,17 +386,16 @@ The frontend is a single-page Ember.js application that polls the pool API to re
     $ sudo npm install -g bower
     $ npm install
     $ bower install
-    $ chmod 755 build.sh
+    $ sudo chown -R $USER:$GROUP ~/.npm
+    $ sudo chown -R $USER:$GROUP ~/.config
     $ ./build.sh
-    $ mkdir ~/www
-    $ mv ~/ethersocial-pool/www/dist/* ~/www/
+    $ cp -R ~/ethersocial-pool/www/dist ~/www
 
-위 처럼 풀의 홈페이지 부분 프론트엔드를 만들었습니다. 그리고 그 파일을 서비스할 디렉토리 www로 이동합니다.
-
+위 처럼 풀의 홈페이지 부분 프론트엔드를 만들었습니다. 그리고 그 파일을 서비스할 디렉토리 www로 복사합니다.
 
 nginx를 설정해야합니다.
 
-    $ sudo vi /etc/nginx/sites-available/default
+    $ sudo nano /etc/nginx/sites-available/default
 
 다음 설정파일을 보고 적절히 수정합니다.
 

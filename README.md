@@ -35,7 +35,7 @@
 * [esc.cminer.co](http://esc.cminer.co)
 * [leafpool.com](http://www.leafpool.com/ethereumsocial)
 
-## Guide to make your very own ETSC pool
+## Guide to make your very own ETSC mining pool
 
 ### Building on Linux
 
@@ -45,7 +45,7 @@ Dependencies:
   * redis-server >= 2.8.0
   * nodejs >= 4 LTS
   * nginx
-  * gesc
+  * gesc (go-esc)
 
 **I highly recommend to use Ubuntu 16.04 LTS.**
 
@@ -76,33 +76,50 @@ This will install the latest nodejs
 
 ### Install go-esc
 
-    $ wget https://github.com/ethereumsocial/go-esc/releases/download/v0.2.2/ gesc-v0.2.2-linux-amd64.tar.gz
-    $ tar -xvzf gesc-v0.2.2-linux-amd64.tar.gz
-    $ cd gesc-v0.2.2-linux-amd64
-    $ cp gesc /usr/local/bin/gesc
+    $ wget https://github.com/ethereumsocial/go-esc/releases/download/v0.2.3/gesc-v0.2.3-linux-amd64.tar.gz
+    $ tar -xvzf gesc-v0.2.3-linux-amd64.tar.gz
+    $ sudo cp gesc-v0.2.3-linux-amd64/gesc /usr/local/bin/gesc
 
 ### Run go-esc
 
-If you use Ubuntu, it is easier to control terminal by screen command. You can get the manual by searching Ubuntu screen on Google.
+If you use Ubuntu, it is easier to control services by using serviced.
 
-    $ screen -S esc1
-    $ gesc --cache=1024 --rpc --rpcaddr 127.0.0.1 --rpcport 8545 --rpcapi "eth,net,web3" console
-    Crtl + a, d
+    $ sudo nano /etc/systemd/system/ethersocial.service
 
-If you want to go back to the original terminal,
+Copy the following example
 
-    $ screen -r esc1
+```
+[Unit]
+Description=Ethersocial for Pool
+After=network-online.target
 
-Run go-esc again.
+[Service]
+ExecStart=/usr/local/bin/gesc --cache=1024 --rpc --rpcaddr 127.0.0.1 --rpcapi "eth,net,web3" --extradata "Mined by <your-pool-domain>" --ethstats "<your-pool-domain>:EthereumSocial@stats.ethereumsocial.kr"
+User=ubuntu
+
+[Install]
+WantedBy=multi-user.target
+```
+
+Then run go-esc by the following commands
+
+    $ sudo systemctl enable ethersocial
+    $ sudo systemctl start ethersocial
+
+If you want to debug the node command
+
+    $ sudo systemctl status ethersocial
+
+Run console
 
     $ gesc attach
 
 Register pool account and open wallet for transaction. This process is always required, when the wallet node is restarted.
 
-    > personal.unlockAccount("password")
+    > personal.newAccount()
     > personal.unlockAccount(eth.accounts[0],"password",40000000)
 
-### Install Ethersocial pool
+### Install Ethereum Social Pool
 
     $ git config --global http.https://gopkg.in.followRedirects true
     $ git clone https://github.com/ethereumsocial/ethersocial-pool
@@ -116,7 +133,7 @@ If you face ethersocial-pool after ls ~/ethersocial-pool/build/bin/, the install
 ### Set up Ethersocial pool
 
     $ mv config.example.json config.json
-    $ vi config.json
+    $ nano config.json
 
 Set up based on commands below.
 
@@ -317,16 +334,33 @@ I recommend this deployment strategy:
 
 
 ### Run Pool
-It is required to run pool after running screen. If it is not, the terminal could be stopped, and pool doesn’t work.
+It is required to run pool by serviced. If it is not, the terminal could be stopped, and pool doesn’t work.
 
-    $ screen -S pool1
-    $ cd ~/ethersocial-pool
-    $ ./build/bin/ethersocial-pool config.json
-    Crtl + a, d
+    $ sudo nano /etc/systemd/system/ethersocial.service
 
-If you want to go back to pool screen, type the command below.
+Copy the following example
 
-    $ screen -r pool1
+```
+[Unit]
+Description=Etherpool
+After=ethersocial.target
+
+[Service]
+Type=simple
+ExecStart=/home/<your-user-name>/ethersocial-pool/build/bin/ethersocial-pool /home/<your-user-name>/ethersocial-pool/config.json
+
+[Install]
+WantedBy=multi-user.target
+```
+
+Then run pool by the following commands
+
+    $ sudo systemctl enable etherpool
+    $ sudo systemctl start etherpool
+
+If you want to debug the node command
+
+    $ sudo systemctl status etherpool
 
 Backend operation has completed so far.
 
@@ -349,24 +383,23 @@ Make some modifications in these settings.
     StratumHost: 'your-pool-domain',
     PoolFee: '1%',
 
-Install nodejs. I suggest using LTS version >= 8.x from https://github.com/nodesource/distributions or from your Linux distribution or simply install nodejs on Ubuntu Xenial 16.04.
-
 The frontend is a single-page Ember.js application that polls the pool API to render miner stats.
 
     $ cd ~/ethersocial-pool/www
     $ sudo npm install -g ember-cli@2.9.1
     $ sudo npm install -g bower
+    $ sudo chown -R $USER:$GROUP ~/.npm
+    $ sudo chown -R $USER:$GROUP ~/.config
     $ npm install
     $ bower install
     $ ./build.sh
-    $ mkdir ~/www
-    $ mv ~/ethersocial-pool/www/dist/* ~/www/
+    $ cp -R ~/ethersocial-pool/www/dist ~/www
 
 As you can see above, the frontend of the pool homepage is created. Then, move to the directory, www, which services the file.
 
 Set up nginx.
 
-    $ sudo vi /etc/nginx/sites-available/default
+    $ sudo nano /etc/nginx/sites-available/default
 
 Modify based on configuration file.
 
@@ -405,3 +438,25 @@ After setting nginx is completed, run the command below.
 
 Type your homepage address or IP address on the web.
 If you face screen without any issues, pool installation has completed.
+
+### Notes
+
+* Unlocking and payouts are sequential, 1st tx go, 2nd waiting for 1st to confirm and so on. You can disable that in code. Carefully read `docs/PAYOUTS.md`.
+* Also, keep in mind that **unlocking and payouts will halt in case of backend or node RPC errors**. In that case check everything and restart.
+* You must restart module if you see errors with the word *suspended*.
+* Don't run payouts and unlocker modules as part of mining node. Create separate configs for both, launch independently and make sure you have a single instance of each module running.
+* If `poolFeeAddress` is not specified all pool profit will remain on coinbase address. If it specified, make sure to periodically send some dust back required for payments.
+* DO NOT OPEN YOUR RPC OR REDIS ON 0.0.0.0!!! It will eventually cause coin theft.
+
+### Credits
+
+Made by sammy007. Licensed under GPLv3.
+Modified by Akira Takizawa for the ethereum social use.
+
+### Donations
+
+ETH/ETC/ETSC: 0xd34699FD152fe38CAacD3C096F6abb1cd79e88b2
+
+![](https://cdn.pbrd.co/images/GP5tI1D.png)
+
+Highly appreciated.
