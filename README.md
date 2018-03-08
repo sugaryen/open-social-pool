@@ -95,7 +95,7 @@ After=network-online.target
 
 [Service]
 ExecStart=/usr/local/bin/gesc --cache=1024 --rpc --rpcaddr 127.0.0.1 --rpcapi "eth,net,web3" --extradata "Mined by <your-pool-domain>" --ethstats "<your-pool-domain>:EthereumSocial@stats.ethereumsocial.kr"
-User=ubuntu
+User=<your-user-name>
 
 [Install]
 WantedBy=multi-user.target
@@ -280,7 +280,7 @@ Set up based on commands below.
     // Pool fee percentage
     "poolFee": 1.0,
     // the address is for pool fee. Personal wallet is recommended to prevent from server hacking.
-    "poolFeeAddress": "0xd34699FD152fe38CAacD3C096F6abb1cd79e88b2",
+    "poolFeeAddress": "",
     // Amount of donation to a pool maker. 10 percent of pool fee is donated to a pool maker now. If pool fee is 1 percent, 0.1 percent which is 10 percent of pool fee should be donated to a pool maker.
     "donate": true,
     // Unlock only if this number of blocks mined back
@@ -413,7 +413,7 @@ Modify based on configuration file.
     server {
         listen 80 default_server;
         listen [::]:80 default_server;
-        root /home/useraccount/www;
+        root /home/<your-user-name>/www;
 
         # Add index.php to the list if you are using PHP
         index index.html index.htm index.nginx-debian.html;

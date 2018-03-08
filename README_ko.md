@@ -91,7 +91,7 @@ After=network-online.target
 
 [Service]
 ExecStart=/usr/local/bin/gesc --cache=1024 --rpc --rpcaddr 127.0.0.1 --rpcapi "eth,net,web3" --extradata "Mined by <your-pool-domain>" --ethstats "<your-pool-domain>:EthereumSocial@stats.ethereumsocial.kr"
-User=ubuntu
+User=<your-user-name>
 
 [Install]
 WantedBy=multi-user.target
@@ -276,7 +276,7 @@ Gesc 콘솔에 접근하고자 하는 경우 아래 명령어를 칩니다.
     // Pool fee percentage
     "poolFee": 1.0,
     // 풀피를 받을 주소입니다. 서버내의 지갑 주소로 해도 되지만 서버로의 해킹 공격이 많기 때문에 가능하면 서버 외부의 개인지갑 주소로 하는 것이 안전합니다.
-    "poolFeeAddress": "0xd34699FD152fe38CAacD3C096F6abb1cd79e88b2",
+    "poolFeeAddress": "",
     // 풀 제작자에게 풀피 중 일부를 기증하는 부분입니다. 현재 풀 피중의 10%를 기증하는 것으로 설정되어 있습니다. 만일 풀피가 1%라면 그 중의 10%이므로 0.1%가 개발자에게 갑니다.
     "donate": true,
     // Unlock only if this number of blocks mined back
@@ -343,7 +343,7 @@ After=ethersocial.target
 
 [Service]
 Type=simple
-ExecStart=/home/<사용자명>/ethersocial-pool/build/bin/ethersocial-pool /home/<사용자명>/ethersocial-pool/config.json
+ExecStart=/home/<your-user-name>/ethersocial-pool/build/bin/ethersocial-pool /home/<your-user-name>/ethersocial-pool/config.json
 
 [Install]
 WantedBy=multi-user.target
@@ -409,7 +409,7 @@ nginx를 설정해야합니다.
     server {
         listen 80 default_server;
         listen [::]:80 default_server;
-        root /home/사용자계정/www;
+        root /home/<your-user-name>/www;
 
         # Add index.php to the list if you are using PHP
         index index.html index.htm index.nginx-debian.html;

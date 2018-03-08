@@ -15,18 +15,18 @@ module.exports = function(environment) {
 
     APP: {
       // API host and port
-      ApiUrl: '//pool.ethereumsocial.kr/',
+      ApiUrl: '//52.78.42.163/',
 
       // HTTP mining endpoint
-      HttpHost: 'http://pool.ethereumsocial.kr',
+      HttpHost: 'http://52.78.42.163',
       HttpPort: 8888,
 
       // Stratum mining endpoint
-      StratumHost: 'pool.ethereumsocial.kr',
+      StratumHost: '52.78.42.163',
       StratumPort: 8008,
 
       // Fee and payout details
-      PoolFee: '1%',
+      PoolFee: '0%',
       PayoutThreshold: '1 ETSC',
 
       // For network hashrate (change for your favourite fork)
