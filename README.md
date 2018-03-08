@@ -373,7 +373,7 @@ You can open firewall by opening 80,443,8080,8888,8008.
 
 ### Modify configuration file
 
-    $ vi ~/ethersocial-pool/www/config/environment.js
+    $ nano ~/ethersocial-pool/www/config/environment.js
 
 Make some modifications in these settings.
 
