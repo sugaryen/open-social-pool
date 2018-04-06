@@ -453,7 +453,7 @@ Modified by Akira Takizawa for the ethereum social use.
 
 ### Donations
 
-ETH/ETC/ETSC: 0xb85150eb365e7df0941f0cf08235f987ba91506a
+ETH/ETC/ETSC: 0x24947682e051f136f593c6960fdb6a1550577d3a
 
 ![](https://cdn.pbrd.co/images/GP5tI1D.png)
 
