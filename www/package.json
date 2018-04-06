@@ -1,8 +1,7 @@
 {
-  "name": "open-ethereum-pool",
+  "name": "open-social-pool",
   "version": "0.0.0",
-  "description": "Open Ethereum Pool",
-  "private": true,
+  "description": "Ethereum Social Pool",
   "directories": {
     "doc": "doc",
     "test": "tests"
@@ -14,7 +13,7 @@
   },
   "repository": "",
   "engines": {
-    "node": ">= 0.12.0"
+    "node": "8.11.1"
   },
   "author": "",
   "license": "MIT",
