@@ -24,10 +24,10 @@
 
 Dependencies:
 
-  * go >= 1.9
+  * go >= 1.10
   * geth or parity
   * redis-server >= 2.8.0
-  * nodejs >= 4 LTS
+  * nodejs >= 8 LTS
   * nginx
 
 **I highly recommend to use Ubuntu 16.04 LTS.**
