@@ -108,7 +108,7 @@ If you want to debug the node command
 
 Run console
 
-    $ geth attach
+    $ geth attach ipc://home/<your-user-name>/.ethereum/social/geth.ipc
 
 Register pool account and open wallet for transaction. This process is always required, when the wallet node is restarted.
 

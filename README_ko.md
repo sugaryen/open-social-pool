@@ -104,7 +104,7 @@ WantedBy=multi-user.target
 
 Geth 콘솔에 접근하고자 하는 경우 아래 명령어를 칩니다.
 
-    $ geth attach
+    $ geth attach ipc://home/<your-user-name>/.ethereum/social/geth.ipc
 
 풀에서 사용할 계정을 새로 생성하고 지갑을 열어줍니다. 그래야 출금이 됩니다. 이 과정은 지갑을 재구동할 때마다 빠뜨리지 말고 실행해야합니다.
 
