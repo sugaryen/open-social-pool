@@ -28,12 +28,9 @@
 
 ### Ethereum Social (ETSC) Pool list
 
-* [pool.ethereumsocial.kr](https://pool.ethereumsocial.kr)
-* [mineesc.com](https://mineesc.com)
-* [reversegainz.info](http://etsc.reversegainz.info)
-* [etsc.hpool.net](http://etsc.hpool.net)
-* [esc.cminer.co](http://esc.cminer.co)
-* [leafpool.com](http://www.leafpool.com/ethereumsocial)
+* [Official Pool](http://pool.ethereumsocial.kr)
+* [Reversegainz Pool](http://etsc.reversegainz.info)
+* [GO池|GO Pool](http://etscpool.gominer.cn)
 
 ## Guide to make your very own ETSC mining pool
 
@@ -45,7 +42,7 @@ Dependencies:
   * redis-server >= 2.8.0
   * nodejs >= 4 LTS
   * nginx
-  * geth (go-social)
+  * geth (multi-geth)
 
 **I highly recommend to use Ubuntu 16.04 LTS.**
 
@@ -73,13 +70,13 @@ This will install the latest nodejs
     $ curl -sL https://deb.nodesource.com/setup_8.x | sudo -E bash -
     $ sudo apt-get install -y nodejs
 
-### Install go-social
+### Install multi-geth
 
-    $ wget https://github.com/ethereumsocial/go-social/releases/download/v1.0.1/geth-social-linux-v1.0.1.zip
-    $ unzip geth-social-linux-v1.0.1.zip
-    $ sudo cp geth /usr/local/bin/geth
+    $ wget https://github.com/ethereumsocial/multi-geth/releases/download/v1.8.3/multi-geth-linux-v1.8.3.zip
+    $ unzip multi-geth-linux-v1.8.3.zip
+    $ sudo mv geth /usr/local/bin/geth
 
-### Run go-esc
+### Run multi-geth
 
 If you use Ubuntu, it is easier to control services by using serviced.
 
@@ -93,14 +90,14 @@ Description=Ethereum Social for Pool
 After=network-online.target
 
 [Service]
-ExecStart=/usr/local/bin/geth --cache=1024 --rpc --extradata "Mined by <your-pool-domain>"
+ExecStart=/usr/local/bin/geth --social --cache=1024 --rpc --extradata "Mined by <your-pool-domain>" --ethstats "<your-pool-domain>:NewEthereumSocial@stats.ethereumsocial.kr"
 User=<your-user-name>
 
 [Install]
 WantedBy=multi-user.target
 ```
 
-Then run go-esc by the following commands
+Then run multi-geth by the following commands
 
     $ sudo systemctl enable ethereumsocial
     $ sudo systemctl start ethereumsocial

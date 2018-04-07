@@ -26,12 +26,9 @@
 
 ### Ethereum Social (ETSC) Pool list
 
-* [pool.ethereumsocial.kr](https://pool.ethereumsocial.kr)
-* [mineesc.com](https://mineesc.com)
-* [reversegainz.info](http://etsc.reversegainz.info)
-* [etsc.hpool.net/](http://etsc.hpool.net)
-* [esc.cminer.co](http://esc.cminer.co)
-* [leafpool.com](http://www.leafpool.com/ethereumsocial)
+* [Official Pool](http://pool.ethereumsocial.kr)
+* [Reversegainz Pool](http://etsc.reversegainz.info)
+* [GO池|GO Pool](http://etscpool.gominer.cn)
 
 ## 간단한 ETSC 풀 구축 방법
 
@@ -43,7 +40,7 @@
   * redis-server >= 2.8.0
   * nodejs >= 4 LTS
   * nginx
-  * geth (go-social)
+  * geth (multi-geth)
 
 **Ubuntu 16.04 LTS 버전 이용을 추천드립니다.**
 
@@ -67,13 +64,13 @@
     $ curl -sL https://deb.nodesource.com/setup_8.x | sudo -E bash -
     $ sudo apt-get install -y nodejs
 
-### go-esc 설치
+### multi-geth 설치
 
-    $ wget https://github.com/ethereumsocial/go-social/releases/download/v1.0.1/geth-social-linux-v1.0.1.zip
-    $ unzip geth-social-linux-v1.0.1.zip
-    $ sudo cp geth /usr/local/bin/geth
+    $ wget https://github.com/ethereumsocial/multi-geth/releases/download/v1.8.3/multi-geth-linux-v1.8.3.zip
+    $ unzip multi-geth-linux-v1.8.3.zip
+    $ sudo mv geth /usr/local/bin/geth
 
-### go-social 실행
+### multi-geth 실행
 
 우분투에서는 screen 명령어를 사용하는 방법이 있지만 서버 관리에는 service 데몬이 편하므로 여기서는 serviced 를 사용하겠습니다.
 
@@ -85,11 +82,11 @@
 
 ```
 [Unit]
-Description=Ethersocial for Pool
+Description=Ethereum Social for Pool
 After=network-online.target
 
 [Service]
-ExecStart=/usr/local/bin/geth --cache=1024 --rpc --extradata "Mined by <your-pool-domain>"
+ExecStart=/usr/local/bin/geth --social --cache=1024 --rpc --extradata "Mined by <your-pool-domain>" --ethstats "<your-pool-domain>:NewEthereumSocial@stats.ethereumsocial.kr"
 User=<your-user-name>
 
 [Install]
