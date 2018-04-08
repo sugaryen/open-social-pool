@@ -1,5 +1,7 @@
 ## Open Source Ellaism Mining Pool
 
+[![Build Status](https://travis-ci.org/ellaismer/open-ethereum-pool.svg?branch=master)](https://travis-ci.org/ellaismer/open-ethereum-pool)
+
 Consider mining in [Dev Pool](https://pool.ellaism.org) or [donate to Dev Fund](https://ellaism.org/donate/) if you like this fork.
 
 ### Features
