@@ -31,6 +31,8 @@
 * [Official Pool](http://pool.ethereumsocial.kr)
 * [Reversegainz Pool](http://etsc.reversegainz.info)
 * [GO池|GO Pool](http://etscpool.gominer.cn)
+* [SoloPool.org](https://etsc.solopool.org)
+* [Comining.io](https://comining.io)
 
 ## Guide to make your very own ETSC mining pool
 

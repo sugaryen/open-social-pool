@@ -29,6 +29,8 @@
 * [Official Pool](http://pool.ethereumsocial.kr)
 * [Reversegainz Pool](http://etsc.reversegainz.info)
 * [GO池|GO Pool](http://etscpool.gominer.cn)
+* [SoloPool.org](https://etsc.solopool.org)
+* [Comining.io](https://comining.io)
 
 ## 간단한 ETSC 풀 구축 방법
 
