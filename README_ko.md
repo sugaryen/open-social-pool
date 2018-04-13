@@ -1,6 +1,6 @@
 ## Open Source Ethereum Social (ETSC) Mining Pool
 
-![Miner's stats page](https://user-images.githubusercontent.com/7374093/31591180-43c72364-b236-11e7-8d47-726cd66b876a.png)
+![Main page of open-social-pool](https://raw.githubusercontent.com/ethereumsocial/open-social-pool/master/misc/open-social-pool.PNG)
 
 [![Discord](https://discordapp.com/api/guilds/417146776974262273/widget.png)](https://discord.gg/h6vsEuw) [![Build Status](https://travis-ci.org/ethereumsocial/open-social-pool.svg?branch=master)](https://travis-ci.org/ethereumsocial/open-social-pool) [![Go Report Card](https://goreportcard.com/badge/github.com/ethereumsocial/open-social-pool)](https://goreportcard.com/report/github.com/ethereumsocial/open-social-pool)
 
@@ -16,6 +16,7 @@
 * JSON-API for stats
 * PPLNS block reward
 * Multi-tx payout at once
+* Beautiful front-end highcharts embedded
 
 #### Proxies
 
@@ -33,6 +34,7 @@
 * [GO池|GO Pool](http://etscpool.gominer.cn)
 * [SoloPool.org](https://etsc.solopool.org)
 * [Comining.io](https://comining.io)
+* [miningpool.city](http://etsc.miningpool.city)
 
 ## 간단한 ETSC 풀 구축 방법
 
@@ -70,8 +72,8 @@
 
 ### multi-geth 설치
 
-    $ wget https://github.com/ethereumsocial/multi-geth/releases/download/v1.8.3/multi-geth-linux-v1.8.3.zip
-    $ unzip multi-geth-linux-v1.8.3.zip
+    $ wget https://github.com/ethereumsocial/multi-geth/releases/download/v1.8.4rc1/multi-geth-linux-v1.8.4rc1.zip
+    $ unzip multi-geth-linux-v1.8.4rc1.zip
     $ sudo mv geth /usr/local/bin/geth
 
 ### multi-geth 실행
@@ -234,6 +236,11 @@ Geth 콘솔에 접근하고자 하는 경우 아래 명령어를 칩니다.
     "payments": 50,
     // Max numbers of blocks to display in frontend
     "blocks": 50,
+    // Frontend Chart related settings
+    "poolCharts":"0 */20 * * * *",
+    "poolChartsNum":74,
+    "minerCharts":"0 */20 * * * *",
+    "minerChartsNum":74
 
     /* If you are running API node on a different server where this module
       is reading data from redis writeable slave, you must run an api instance with this option enabled in order to purge hashrate stats from main redis node.
@@ -438,3 +445,32 @@ nginx를 설정해야합니다.
 
 웹브라우저에서 자신의 홈페이지 또는 IP를 입력해봅니다.
 화면이 제대로 뜨고 있다면 풀 설치 성공입니다.
+
+### Extra) How To Secure the pool frontend with Let's Encrypt (https)
+
+This guide was originally referred from [digitalocean - How To Secure Nginx with Let's Encrypt on Ubuntu 16.04](https://www.digitalocean.com/community/tutorials/how-to-secure-nginx-with-let-s-encrypt-on-ubuntu-16-04)
+
+First, install the Certbot's Nginx package with apt-get
+
+```
+$ sudo add-apt-repository ppa:certbot/certbot
+$ sudo apt-get update
+$ sudo apt-get install python-certbot-nginx
+```
+
+And then open your nginx setting file, make sure the server name is configured!
+
+```
+$ sudo nano /etc/nginx/sites-available/default
+. . .
+server_name <your-pool-domain>;
+. . .
+```
+
+Change the _ to your pool domain, and now you can obtain your auto-renewaled ssl certificate for free!
+
+```
+$ sudo certbot --nginx -d <your-pool-domain>
+```
+
+Now you can access your pool's frontend via https! Share your pool link!
