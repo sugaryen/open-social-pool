@@ -5,7 +5,7 @@
         <h1 style="font-size: 24px">
           <strong>Ethereum Social Pool</strong>
         </h1>
-        <strong>Min. payout threshold: {{config.PayoutThreshold}}</strong>, Payouts run twice per day.<br/>
+        <strong>Min. payout threshold: {{config.PayoutThreshold}}</strong><br/>
         <span class="label label-success">PROP</span> Stable and profitable pool with regular payouts.<br/>
         <span class="label label-success">PPLNS</span> Real time PPLNS payout scheme
       </div>
@@ -26,7 +26,9 @@
     </div>
   </div>
 </div>
-
+<div>
+{{high-charts mode=chartMode chartOptions=chartOptions content=chartData}}
+</div>
 <div class="container">
   <div class="stats">
     <h4>Your Stats &amp; Payment History</h4>
@@ -41,9 +43,6 @@
   </div>
   <div>
     <hr/>
-    <div>
-    {{high-charts mode=chartMode chartOptions=chartOptions content=chartData}}
-    </div>
     <h4 class="note note-info text-center">
       EthDcrMiner64.exe -epool {{config.StratumHost}}:8008 -esm 0 -ewal &lt;address&gt; -eworker &lt;WORKER&gt; -allcoins 1 -allpools 1
     </h4>
