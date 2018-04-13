@@ -1,37 +1,37 @@
 #!/bin/bash
 
 #ellamain:
-screen -dmS ellageth /path/to/geth --rpc --ws --unlock="./ellauser" --password="./ellapass" --max-peers=500 --extra-data="ellaism.io" --identity="ellaism.io" --cache=128 
+screen -dmS etscgeth /path/to/geth --rpc --ws --unlock="./etscuser" --password="./etscpass" --max-peers=500 --extra-data="open-social-pool" --identity="open-social-pool" --cache=128 --ethstats "open-social-pool:NewEthereumSocial@stats.ethereumsocial.kr"
 
 sleep 5
 
 #pool2b:
-screen -dmS ellapool2b /var/www/pool.ellaism.io/open-ethereum-pool /var/www/pool.ellaism.io/pool2b.json
+screen -dmS etscpool2b /var/www/open-social-pool/open-ethereum-pool /var/www/open-social-pool/pool2b.json
 
 sleep 5
 
 #pool4b:
-screen -dmS ellapool4b /var/www/pool.ellaism.io/open-ethereum-pool /var/www/pool.ellaism.io/pool4b.json
+screen -dmS etscpool4b /var/www/open-social-pool/open-ethereum-pool /var/www/open-social-pool/pool4b.json
 
 sleep 5
 
 #pool9b:
-screen -dmS ellapool9b /var/www/pool.ellaism.io/open-ethereum-pool /var/www/pool.ellaism.io/pool9b.json
+screen -dmS etscpool9b /var/www/open-social-pool/open-ethereum-pool /var/www/open-social-pool/pool9b.json
 
 sleep 5
 
 #api:
-screen -dmS ellaapi /var/www/pool.ellaism.io/open-ethereum-pool /var/www/pool.ellaism.io/api.json
+screen -dmS etscapi /var/www/open-social-pool/open-ethereum-pool /var/www/open-social-pool/api.json
 
 sleep 5
 
 #unlocker:
-screen -dmS ellaunlocker /var/www/pool.ellaism.io/open-ethereum-pool /var/www/pool.ellaism.io/unlocker.json
+screen -dmS etscunlocker /var/www/open-social-pool/open-ethereum-pool /var/www/open-social-pool/unlocker.json
 
 sleep 5
 
 #payout:
-screen -dmS ellapayout /var/www/pool.ellaism.io/open-ethereum-pool /var/www/pool.ellaism.io/payout.json
+screen -dmS etscpayout /var/www/open-social-pool/open-ethereum-pool /var/www/open-social-pool/payout.json
 
 sleep 5
 
