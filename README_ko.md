@@ -14,6 +14,8 @@
 * Modern beautiful Ember.js frontend
 * Separate stats for workers: can highlight timed-out workers so miners can perform maintenance of rigs
 * JSON-API for stats
+* PPLNS block reward
+* Multi-tx payout at once
 
 #### Proxies
 
@@ -29,6 +31,8 @@
 * [Official Pool](http://pool.ethereumsocial.kr)
 * [Reversegainz Pool](http://etsc.reversegainz.info)
 * [GO池|GO Pool](http://etscpool.gominer.cn)
+* [SoloPool.org](https://etsc.solopool.org)
+* [Comining.io](https://comining.io)
 
 ## 간단한 ETSC 풀 구축 방법
 
@@ -137,6 +141,8 @@ Geth 콘솔에 접근하고자 하는 경우 아래 명령어를 칩니다.
   "coin": "etsc",
   // Give unique name to each instance
   "name": "main",
+  // PPLNS rounds
+  "pplns": 9000,
 
   "proxy": {
     "enabled": true,
@@ -311,6 +317,7 @@ Geth 콘솔에 접근하고자 하는 경우 아래 명령어를 칩니다.
     "threshold": 1000000000,
     // Perform BGSAVE on Redis after successful payouts session
     "bgsave": false
+    "concurrentTx": 10
   }
 }
 ```
