@@ -1,0 +1,46 @@
+<div class="tab-content">
+   <div id="ember568" role="tabpanel" class="ember-view tab-pane active fade in">
+      <div class="paper border-top-0">
+        <br />
+        <p>Obtain ETSC wallet address at <a href="https://wallet.ethereumsocial.kr/" target="_blank">https://wallet.ethereumsocial.kr/</a></p>
+        <p>Download <a href="https://github.com/ethereum-mining/ethminer/releases" target="blank">ethminer</a> for you operation system</p>
+        <h4><img src="windows.svg" height="20"> Windows</h4>
+        <p> Create <code>miner.bat</code> file with following content and run it.</p>
+        <pre><code>
+setx GPU_FORCE_64BIT_PTR 0
+setx GPU_MAX_HEAP_SIZE 100
+setx GPU_USE_SYNC_OBJECTS 1
+setx GPU_MAX_ALLOC_PERCENT 100
+setx GPU_SINGLE_ALLOC_PERCENT 100
+<kbd>&lt;path to miner&gt;</kbd>/ethminer.exe -F {{config.HttpHost}}:8888/<kbd>&lt;wallet&gt;</kbd>/<kbd>&lt;worker&gt;</kbd> -G --farm-recheck 200
+        </code></pre>
+        <p>
+          <code>&lt;wallet&gt;</code> is your ETSC wallet address, example:
+          <code>0xd34699FD152fe38CAacD3C096F6abb1cd79e88b2</code>.
+          <br>
+          <code>&lt;worker&gt;</code> is custom name for worker, example : <code>rig01</code>, <code>rig02</code>
+        </p>
+      </div>
+      <br />
+      <div class="paper border-top-0">
+        <h4><img src="linux.svg" height="20"> Linux</h4>
+        <p>Create <code>miner.sh</code> file with following content:</p>
+        <pre><code>
+#!/bin/bash
+export GPU_FORCE_64BIT_PTR=0
+export GPU_MAX_HEAP_SIZE=100
+export GPU_USE_SYNC_OBJECTS=1
+export GPU_MAX_ALLOC_PERCENT=100
+export GPU_SINGLE_ALLOC_PERCENT=100
+<kbd>&lt;path to miner&gt;</kbd>/ethminer -F {{config.HttpHost}}:8888/<kbd>&lt;wallet&gt;</kbd>/<kbd>&lt;worker&gt;</kbd> -G --farm-recheck 200
+        </code></pre>
+        <p>Make it executable: <code>chmod +x &lt;path to .sh file&gt;</code> and run it</p>
+        <p>
+          <code>&lt;wallet&gt;</code> is your ETSC wallet address, example:
+          <code>0xd34699FD152fe38CAacD3C096F6abb1cd79e88b2</code>.
+          <br>
+          <code>&lt;worker&gt;</code> is custom name for worker, example : <code>rig01</code>, <code>rig02</code>
+        </p>
+      </div>
+   </div>
+</div>
