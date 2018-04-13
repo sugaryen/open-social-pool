@@ -1,6 +1,6 @@
 ## Open Source Ethereum Social (ETSC) Mining Pool
 
-![Miner's stats page](https://user-images.githubusercontent.com/7374093/31591180-43c72364-b236-11e7-8d47-726cd66b876a.png)
+[![Build Status](https://travis-ci.org/ellaism/open-ethereum-pool.svg?branch=master)](https://travis-ci.org/ellaism/open-ethereum-pool)
 
 [![Discord](https://discordapp.com/api/guilds/417146776974262273/widget.png)](https://discord.gg/h6vsEuw) [![Build Status](https://travis-ci.org/ethereumsocial/open-social-pool.svg?branch=master)](https://travis-ci.org/ethereumsocial/open-social-pool) [![Go Report Card](https://goreportcard.com/badge/github.com/ethereumsocial/open-social-pool)](https://goreportcard.com/report/github.com/ethereumsocial/open-social-pool)
 
@@ -16,6 +16,7 @@
 * Modern beautiful Ember.js frontend
 * Separate stats for workers: can highlight timed-out workers so miners can perform maintenance of rigs
 * JSON-API for stats
+* PPLNS block reward
 
 #### Proxies
 
@@ -142,6 +143,8 @@ Set up based on commands below.
   "coin": "etsc",
   // Give unique name to each instance
   "name": "main",
+  // PPLNS rounds
+  "pplns": 9000,
 
   "proxy": {
     "enabled": true,
@@ -448,7 +451,11 @@ If you face screen without any issues, pool installation has completed.
 ### Credits
 
 Made by sammy007. Licensed under GPLv3.
-Modified by Akira Takizawa for the ethereum social use.
+Modified by Akira Takizawa & The Ellaism Project.
+
+#### Contributors
+
+[Alex Leverington](https://github.com/subtly)
 
 ### Donations
 
