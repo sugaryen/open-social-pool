@@ -16,6 +16,8 @@
 * Modern beautiful Ember.js frontend
 * Separate stats for workers: can highlight timed-out workers so miners can perform maintenance of rigs
 * JSON-API for stats
+* PPLNS block reward
+* Multi-tx payout at once
 
 #### Proxies
 
@@ -142,6 +144,8 @@ Set up based on commands below.
   "coin": "etsc",
   // Give unique name to each instance
   "name": "main",
+  // PPLNS rounds
+  "pplns": 9000,
 
   "proxy": {
     "enabled": true,
@@ -316,6 +320,7 @@ Set up based on commands below.
     "threshold": 1000000000,
     // Perform BGSAVE on Redis after successful payouts session
     "bgsave": false
+    "concurrentTx": 10
   }
 }
 ```
@@ -448,7 +453,11 @@ If you face screen without any issues, pool installation has completed.
 ### Credits
 
 Made by sammy007. Licensed under GPLv3.
-Modified by Akira Takizawa for the ethereum social use.
+Modified by Akira Takizawa & The Ellaism Project.
+
+#### Contributors
+
+[Alex Leverington](https://github.com/subtly)
 
 ### Donations
 
