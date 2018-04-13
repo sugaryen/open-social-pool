@@ -29,10 +29,10 @@ export default Ember.Controller.extend({
                         load: function() {
                             var series = this.series[0];
                             setInterval(function() {
-                                var x = (new Date).getDate(),
+                                var x = (new Date()).getDate(),
                                     y = e.getWithDefault("model.paymentCharts");
-                                series.addPoint([x, y], true, true)
-                            }, 1090000000)
+                                series.addPoint([x, y], true, true);
+                            }, 1090000000);
                         }
                     }
                 },
@@ -64,7 +64,7 @@ export default Ember.Controller.extend({
                 },
                 tooltip: {
                     formatter: function() {
-                        return "<b>" + Highcharts.dateFormat('%Y-%m-%d', new Date(this.x)) + "<b><br>Payment&nbsp;<b>" + this.y.toFixed(4) + "&nbsp;ESN</b>"
+                        return "<b>" + Highcharts.dateFormat('%Y-%m-%d', new Date(this.x)) + "<b><br>Payment&nbsp;<b>" + this.y.toFixed(4) + "&nbsp;ESN</b>";
                     },
                     useHTML: true
                 },
@@ -76,28 +76,32 @@ export default Ember.Controller.extend({
                     name: "Payment Series",
                     data: function() {
                         var e, a = [];
-                        if (null != t)
+                        if (null != t) {
                             for (e = 0; e <= t.length - 1; e += 1) {
                                 var n = 0,
                                     r = 0,
                                     l = 0;
-                                    r = new Date(1e3 * t[e].x),
-                                    l = r.toLocaleString(), 
-                                    n = t[e].amount / 1000000000, a.push({
-                                    x: r,
-                                    d: l,
-                                    y: n
-                                })
-                            } else a.push({
-                            x: 0,
-                            d: 0,
-                            y: 0
-                        });
-                        return a
+                                    r = new Date(1e3 * t[e].x);
+                                    l = r.toLocaleString();
+                                    n = t[e].amount / 1000000000;
+                                    a.push({
+                                        x: r,
+                                        d: l,
+                                        y: n
+                                    });
+                            }
+                        } else {
+                            a.push({
+                                x: 0,
+                                d: 0,
+                                y: 0
+                           });
+                        }
+                        return a;
                     }()
                 }]
             };
-        return a
+        return a;
     }
 })
 });
